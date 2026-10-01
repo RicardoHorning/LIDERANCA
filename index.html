@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encontro de Liderança</title>
+    <style>
+        :root {
+            --primary: #b91c1c;
+            --primary-hover: #991b1b;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #f59e0b;
+            --border: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 550px;
+            background-color: var(--card-bg);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid var(--border);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 18px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        .header h1 {
+            font-size: 1.3rem;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: bold;
+            margin-top: 4px;
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            background: #0f172a;
+            border-radius: 8px;
+            padding: 4px;
+            gap: 2px;
+        }
+
+        .step-pill {
+            flex: 1;
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 8px 2px;
+            border-radius: 6px;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .step-pill.active {
+            background-color: var(--primary);
+            color: #fff;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #e2e8f0;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background-color: #0f172a;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: var(--accent);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 75px;
+        }
+
+        .btn-random {
+            background: #334155;
+            color: #f1f5f9;
+            border: none;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 6px;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .btn-next {
+            background-color: var(--primary);
+            color: #fff;
+        }
+
+        .btn-prev {
+            background-color: #334155;
+            color: #fff;
+        }
+
+        /* CARD FINAL E CORREÇÕES DE QUEBRA DE LINHA NO CELULAR */
+        .manifesto-card {
+            background: linear-gradient(145deg, #18181b, #0f172a);
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 16px;
+            color: #fff;
+            width: 100%;
+            box-sizing: border-box;
+            overflow: hidden; /* Evita estouro lateral */
+        }
+
+        .manifesto-card h3 {
+            color: var(--accent);
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .manifesto-section {
+            margin-bottom: 12px;
+            border-bottom: 1px dashed #334155;
+            padding-bottom: 8px;
+            /* Garantia de quebra de linha para celulares */
+            word-wrap: break-word;
+            overflow-wrap: anywhere;
+            white-space: normal;
+        }
+
+        .manifesto-section:last-child {
+            border-bottom: none;
+        }
+
+        .manifesto-label {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        /* REGRAS RÍGIDAS DE QUEBRA DE TEXTO LONGO */
+        .manifesto-text {
+            font-size: 0.9rem;
+            margin-top: 4px;
+            line-height: 1.4;
+            color: #f1f5f9;
+            word-wrap: break-word;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            white-space: pre-wrap; /* Mantém parágrafos e força quebra */
+            max-width: 100%;
+            display: block;
+        }
+
+        .manifesto-text span {
+            word-wrap: break-word;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .highlight-box {
+            background: rgba(185, 28, 28, 0.25);
+            border-left: 4px solid var(--primary);
+            padding: 8px 10px;
+            border-radius: 4px;
+            margin-top: 4px;
+            word-wrap: break-word;
+            overflow-wrap: anywhere;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1 id="headerCompanyTitle">Nossa Empresa</h1>
+        <p>Liderança na Prática: Construindo Nossa Cultura</p>
+    </div>
+
+    <!-- Progresso -->
+    <div class="progress-bar" id="progressBar">
+        <div class="step-pill active" id="pill-1">1. Equipe</div>
+        <div class="step-pill" id="pill-2">2. Rotina</div>
+        <div class="step-pill" id="pill-3">3. Atitude</div>
+        <div class="step-pill" id="pill-4">4. Combinado</div>
+        <div class="step-pill" id="pill-5">5. Leitura</div>
+    </div>
+
+    <form id="cultureForm">
+        <!-- PASSO 1 -->
+        <div class="step-content active" id="step-1">
+            <h2>Passo 1: Quem está na mesa?</h2>
+            <p class="desc">Identifiquem a equipe e os setores representados.</p>
+            
+            <div class="form-group">
+                <label for="companyName">Nome da Empresa (Opcional):</label>
+                <input type="text" id="companyName" placeholder="Ex: Nossa Empresa" oninput="updateCompanyTitle()">
+            </div>
+
+            <div class="form-group">
+                <label for="groupName">Nome do Grupo ou Setores da Mesa:</label>
+                <input type="text" id="groupName" placeholder="Ex: Mesa 1 - Qualidade, Produção e Logística" required>
+            </div>
+
+            <div class="form-group">
+                <label for="members">Líderes participantes desta mesa:</label>
+                <textarea id="members" placeholder="Ex: João, Maria, Pedro, Patricia..." required></textarea>
+            </div>
+        </div>
+
+        <!-- PASSO 2 -->
+        <div class="step-content" id="step-2">
+            <h2>Passo 2: A Pressão e a Rotina</h2>
+            <p class="desc">Sinceridade sobre como as coisas funcionam na prática.</p>
+
+            <div class="form-group">
+                <label>1. O que é muito valorizado e cobrado no dia a dia?</label>
+                <input type="text" id="spoken" placeholder="Ex: Cumprir prazos, segurança, qualidade, entregar o resultado" required>
+            </div>
+
+            <div class="form-group">
+                <label>2. Quando a rotina aperta ou a pressão aumenta, o que costuma ser priorizado em 1º lugar?</label>
+                <input type="text" id="underPressure" placeholder="Ex: Entregar a demanda e bater a meta a qualquer custo" required>
+            </div>
+
+            <div class="form-group">
+                <label>3. Quando isso acontece, qual é a mensagem silenciosa que a equipe entende?</label>
+                <input type="text" id="invisibleRule" placeholder="Ex: 'O clima da equipe não importa, o que vale é só o número'" required>
+            </div>
+        </div>
+
+        <!-- PASSO 3 (COM DIVERSIDADE DE CASOS PARA CADA MESA) -->
+        <div class="step-content" id="step-3">
+            <h2>Passo 3: Desafio de Liderança</h2>
+            <p class="desc">A cultura de uma empresa é aquilo que os líderes toleram.</p>
+
+            <div class="form-group">
+                <label>Situação do Dia a Dia (Sorteada para sua mesa):</label>
+                <p id="scenarioText" style="font-size:0.85rem; color:#cbd5e1; margin-bottom:4px; background:#0f172a; padding:10px; border-radius:6px; border-left:3px solid var(--accent); line-height: 1.4;">
+                    <em>Carregando caso...</em>
+                </p>
+                <button type="button" class="btn-random" onclick="drawScenario()">🔄 Sortear Outro Caso</button>
+            </div>
+
+            <div class="form-group" style="margin-top: 12px;">
+                <label for="decision">Como o líder deve agir nessa situação sem "passar pano" só porque a pessoa entrega resultado?</label>
+                <textarea id="decision" placeholder="Descreva a atitude e a conversa que o líder precisa ter..." required></textarea>
+            </div>
+        </div>
+
+        <!-- PASSO 4 -->
+        <div class="step-content" id="step-4">
+            <h2>Passo 4: Nosso Combinado Prático</h2>
+            <p class="desc">Ações simples para fortalecer a comunicação no setor.</p>
+
+            <div class="form-group">
+                <label for="ritual">Qual atitude rápida de alinhamento ou conversa (3 min) faremos com nossas equipes?</label>
+                <textarea id="ritual" placeholder="Ex: Uma conversa rápida de início de turno/semana focada em alinhar prioridades e agradecer o apoio entre setores..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="commitment">Nossa Regra de Ouro (O que NÃO aceitamos de jeito nenhum em nossos setores?):</label>
+                <input type="text" id="commitment" placeholder="Ex: Falta de respeito e grosseria, mesmo nos momentos de maior correria." required>
+            </div>
+        </div>
+
+        <!-- PASSO 5 (COM QUEBRA DE LINHAS PERFEITA NO CELULAR) -->
+        <div class="step-content" id="step-5">
+            <h2>Nosso Compromisso de Liderança</h2>
+            <p class="desc"><strong>Instrução:</strong> Escolham um representante da mesa para ficar em pé e ler este compromisso em voz alta para todos.</p>
+
+            <div class="manifesto-card" id="manifestoDisplay">
+                <h3 id="mCompany">Compromisso da Liderança</h3>
+                
+                <div class="manifesto-section">
+                    <div class="manifesto-label">Mesa / Setores:</div>
+                    <div class="manifesto-text" id="mGroup">--</div>
+                    <div style="font-size:0.75rem; color:#94a3b8; margin-top:2px; word-wrap:break-word;" id="mMembers">--</div>
+                </div>
+
+                <div class="manifesto-section">
+                    <div class="manifesto-label">Nossa Leitura do Dia a Dia:</div>
+                    <div class="manifesto-text">Reconhecemos que na correria a tendência é focar só em <strong><span id="mPressure">--</span></strong>, e isso pode fazer as pessoas acharem que <em>"<span id="mRule">--</span>"</em>.</div>
+                </div>
+
+                <div class="manifesto-section">
+                    <div class="manifesto-label">Como o Líder se posiciona:</div>
+                    <div class="manifesto-text" id="mDecision">--</div>
+                </div>
+
+                <div class="manifesto-section">
+                    <div class="manifesto-label">Nosso Combinado de Comunicação com a Equipe:</div>
+                    <div class="manifesto-text highlight-box" id="mRitual">--</div>
+                </div>
+
+                <div class="manifesto-section" style="margin-bottom:0;">
+                    <div class="manifesto-label">Nossa Regra de Ouro:</div>
+                    <div class="manifesto-text" style="font-weight:bold; color:var(--accent);" id="mCommitment">--</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botões -->
+        <div class="buttons">
+            <button type="button" class="btn-prev" id="btnPrev" style="display:none;" onclick="changeStep(-1)">Voltar</button>
+            <button type="button" class="btn-next" id="btnNext" onclick="changeStep(1)">Avançar</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 5;
+
+    // Lista de cenários realistas para evitar respostas idênticas entre as mesas
+    const scenarios = [
+        "Aquele colaborador muito competente, que entrega ótimos resultados e cumpre todos os prazos, mas costuma ser ríspido, impaciente ou desrespeitoso na comunicação com os colegas e outros setores.",
+        "Uma equipe que, para bater a meta do dia ou entregar o prazo urgente, pula o alinhamento de segurança/qualidade e não avisa o setor seguinte sobre pequenas falhas que surgiram.",
+        "Dois setores que vivem trocando acusações quando surge um erro: um diz que não recebeu a informação certa e o outro diz que faltou capricho na execução.",
+        "Um liderado experiente que faz piadas ácidas ou debocha das novas ideias e procedimentos da empresa, contaminando os colaboradores mais novos do setor.",
+        "Um funcionário que cumpre bem suas tarefas individuais, mas se recusa expressamente a ajudar os colegas quando seu próprio trabalho já terminou.",
+        "Um colaborador que esconde pequenos erros da liderança por medo de levar bronca, fazendo o problema explodir mais tarde quando o custo de correção é bem maior."
+    ];
+
+    function updateCompanyTitle() {
+        const val = document.getElementById('companyName').value.trim();
+        document.getElementById('headerCompanyTitle').innerText = val ? val : "Nossa Empresa";
+    }
+
+    function drawScenario() {
+        const randomIndex = Math.floor(Math.random() * scenarios.length);
+        document.getElementById('scenarioText').innerHTML = `<em>"${scenarios[randomIndex]}"</em>`;
+    }
+
+    // Sortear um cenário inicial ao carregar a página
+    drawScenario();
+
+    function changeStep(direction) {
+        if (direction === 1) {
+            const currentStepEl = document.getElementById(`step-${currentStep}`);
+            const inputs = currentStepEl.querySelectorAll('input, textarea');
+            for (let input of inputs) {
+                if (!input.checkValidity()) {
+                    input.reportValidity();
+                    return;
+                }
+            }
+        }
+
+        currentStep += direction;
+
+        if (currentStep > totalSteps) currentStep = totalSteps;
+        if (currentStep < 1) currentStep = 1;
+
+        updateUI();
+    }
+
+    function updateUI() {
+        for (let i = 1; i <= totalSteps; i++) {
+            document.getElementById(`step-${i}`).classList.remove('active');
+            document.getElementById(`pill-${i}`).classList.remove('active');
+        }
+
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+        
+        for (let i = 1; i <= currentStep; i++) {
+            document.getElementById(`pill-${i}`).classList.add('active');
+        }
+
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+
+        btnPrev.style.display = currentStep === 1 ? 'none' : 'block';
+
+        if (currentStep === totalSteps - 1) {
+            btnNext.innerText = 'Ver Nosso Compromisso';
+        } else if (currentStep === totalSteps) {
+            btnNext.innerText = 'Finalizar / Outro Grupo';
+            renderManifesto();
+        } else {
+            btnNext.innerText = 'Avançar';
+        }
+
+        if (currentStep === totalSteps) {
+            btnNext.onclick = function() {
+                if(confirm("Deseja reiniciar a tela para outro grupo preencher?")) {
+                    location.reload();
+                }
+            };
+        } else {
+            btnNext.onclick = function() { changeStep(1); };
+        }
+    }
+
+    function renderManifesto() {
+        const company = document.getElementById('companyName').value.trim();
+        document.getElementById('mCompany').innerText = company ? `Compromisso de Liderança - ${company}` : "Compromisso da Liderança";
+        document.getElementById('mGroup').innerText = document.getElementById('groupName').value;
+        document.getElementById('mMembers').innerText = "Líderes: " + document.getElementById('members').value;
+        document.getElementById('mPressure').innerText = document.getElementById('underPressure').value;
+        document.getElementById('mRule').innerText = document.getElementById('invisibleRule').value;
+        document.getElementById('mDecision').innerText = document.getElementById('decision').value;
+        document.getElementById('mRitual').innerText = document.getElementById('ritual').value;
+        document.getElementById('mCommitment').innerText = document.getElementById('commitment').value;
+    }
+</script>
+
+</body>
+</html>
